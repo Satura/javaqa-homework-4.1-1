@@ -14,4 +14,8 @@ public class Book extends Product{
         super(id, name, cost);
         this.author = author;
     }
+
+    public boolean matches(String search){
+        return super.matches(search) || author.equalsIgnoreCase(search);
+    }
 }

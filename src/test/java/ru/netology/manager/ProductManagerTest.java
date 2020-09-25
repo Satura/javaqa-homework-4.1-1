@@ -83,11 +83,19 @@ class ProductManagerTest {
     }
 
     @Test
-    void shouldMatches() {
-        assertTrue (manager.matches(phone1,"brand1"));
+    void shouldNotMatches() {
+        assertFalse (phone1.matches("brand10"));
     }
     @Test
-    void shouldNotMatches() {
-        assertFalse (manager.matches(phone1,"brand0"));
+    void shouldMatches_phone() {
+        assertTrue (phone1.matches("brand1"));
+    }
+    @Test
+    void shouldMatches_book() {
+        assertTrue (book1.matches("author1"));
+    }
+    @Test
+    void shouldMatches_product() {
+        assertTrue (product_1.matches("product1"));
     }
 }
