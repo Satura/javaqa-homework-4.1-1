@@ -5,15 +5,16 @@ import org.junit.jupiter.api.Test;
 import ru.netology.domain.Book;
 import ru.netology.domain.Product;
 import ru.netology.domain.Smartphone;
+import ru.netology.exception.NotFoundException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductRepositryTest {
     ProductRepositry repository = new ProductRepositry();
 
-    private Product product_1 = new Product(1, "product1", 150);
-    private Product product_2 = new Product(2, "product2", 120);
-    private Product product_3 = new Product(3, "product3", 350);
+    private Product product1 = new Product(1, "product1", 150);
+    private Product product2 = new Product(2, "product2", 120);
+    private Product product3 = new Product(3, "product3", 350);
     private Book book1 = new Book(4,"book1", 450, "author1");
     private Book book2 = new Book(5,"book2", 450, "author2");
     private Book book3 = new Book(6,"book3", 450, "author3");
@@ -24,9 +25,9 @@ class ProductRepositryTest {
 
     @BeforeEach
     void setUp() {
-        repository.save(product_1);
-        repository.save(product_2);
-        repository.save(product_3);
+        repository.save(product1);
+        repository.save(product2);
+        repository.save(product3);
         repository.save(book1);
         repository.save(book2);
         repository.save(book3);
@@ -37,7 +38,7 @@ class ProductRepositryTest {
 
     @Test
     void shouldfindAll() {
-        Product[] expected = new Product[]{product_1,product_2,product_3,book1,book2,book3,phone1,phone2,phone3};
+        Product[] expected = new Product[]{product1,product2,product3,book1,book2,book3,phone1,phone2,phone3};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected,actual);
     }
@@ -45,25 +46,24 @@ class ProductRepositryTest {
     @Test
     void shouldRemoveById() {
         repository.removeById(3);
-        Product[] expected = new Product[]{product_1,product_2,book1,book2,book3,phone1,phone2,phone3};
+        Product[] expected = new Product[]{product1,product2,book1,book2,book3,phone1,phone2,phone3};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected,actual);
     }
 
     @Test
-    void shouldNotRemoveById() {
-        repository.removeById(30);
-        Product[] expected = new Product[]{product_1,product_2,product_3,book1,book2,book3,phone1,phone2,phone3};
-        Product[] actual = repository.findAll();
-        assertArrayEquals(expected,actual);
+    void shouldGenerateNotFoundException() {
+        assertThrows(NotFoundException.class, () -> repository.removeById(50));
+
     }
 
     @Test
     void shouldSave() {
         Product product_4 = new Product(10,"product_4",10);
         repository.save(product_4);
-        Product[] expected = new Product[]{product_1,product_2,product_3,book1,book2,book3,phone1,phone2,phone3, product_4};
+        Product[] expected = new Product[]{product1,product2,product3,book1,book2,book3,phone1,phone2,phone3, product_4};
         Product[] actual = repository.findAll();
         assertArrayEquals(expected,actual);
     }
+
 }
